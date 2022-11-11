@@ -1,46 +1,52 @@
-options = ['rock', 'paper', 'scissors'];
-
-
-function getComputerChoice(){
+function getComputerSelection(){
     let selection = Math.floor(Math.random()*3);
-    return options[selection];
+    return selection;
 }
 
-function getOutcome(playerSelection, computerSelection){
-    playerSelection = playerSelection.toLowerCase();
+function playRound(playerSelection, computerSelection){
+    const options = ['rock', 'paper', 'scissors'];
 
-    // console.log(`playerselection: ${playerSelection}\ncomputerselection: ${computerSelection}`);
+    if (playerSelection == null) {
+        return;
+    }
 
-    //this is intentionally implemented in a manual way.
-    //Otherwise, would think about this problem in cycles using modulus operator.
-    if (playerSelection == 'rock') {
-        if (computerSelection == 'paper'){
-            return(`You Lose! Paper beats rock :(`);
-        } else if (computerSelection == 'scissors') {
-            return(`You Win! Rock beats scissors`);
-        } else {
-            return(`It's a tie!`);
-        }
-    }
-    if (playerSelection == 'paper') {
-        if (computerSelection == 'scissors'){
-            return(`You Lose! Scissors beats paper :(`);
-        } else if (computerSelection == 'rock') {
-            return(`You Win! Paper beats rock`);
-        } else {
-            return(`It's a tie!`);
-        }
-    }
-    if (playerSelection == 'scissors') {
-        if (computerSelection == 'rock'){
-            return(`You Lose! Rock beats scissors :(`);
-        } else if (computerSelection == 'paper') {
-            return(`You Win! Scissors beats paper`);
-        } else {
-            return(`It's a tie!`);
-        }
+    playerInput = playerSelection.toLowerCase();
+    playerSelection = options.indexOf(playerInput);
+
+    if (playerSelection == computerSelection) {
+        alert(`It's a tie!\n${options[playerSelection]} ties with ${options[computerSelection]}`);
+        return('tie');
+    } else if ((playerSelection + 1)%3 == computerSelection) {
+        alert(`You lose!\n${options[playerSelection]} loses against ${options[computerSelection]}`)
+        return('loss');
+    } else {
+        alert(`You win!\n${options[playerSelection]} wins against ${options[computerSelection]}`)
+        return('win');
     }
 
 }
 
-// console.log(getOutcome('scissors',getComputerChoice()));
+function game(){
+    let playerScore=0;
+    let computerScore=0;
+
+
+    for (let i = 0; i<5; i++) {
+        let playerSelection = prompt('Input your choice: rock, paper, or scissors.','');
+        
+        let result = playRound(playerSelection, getComputerSelection());
+
+        if (result == 'win') {
+            playerScore++;
+        } else if (result == 'loss') {
+            computerScore++;
+        }
+    }
+
+    let winner = playerScore > computerScore ? 'You are the winner :)' :
+    playerScore == computerScore ? `It's a tie!` : 'The computer has won :(';
+
+    alert(winner);
+}
+
+game();
